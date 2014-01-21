@@ -13,7 +13,10 @@
 					"statusbar"=>0, 
 					"menubar"=>0, 
 					"toolbar"=>0, 
-					"resizable"=>0
+					"resizable"=>0,
+					"repeat_mode"=>"day", 
+					"cookie_duration"=>7,
+					"cookie_num_view"=>1
 				);
 				
 		if(isset($_GET['action'])){$action=$_GET['action'];}else{$action="";}
@@ -37,7 +40,11 @@
 						"statusbar"=>intval($_POST['statusbar']), 
 						"menubar"=>intval($_POST['menubar']), 
 						"toolbar"=>intval($_POST['toolbar']), 
-						"resizable"=>intval($_POST['resizable'])
+						"resizable"=>intval($_POST['resizable']), 
+						"repeat_mode"=>($_POST['repeat_mode']),
+						"cookie_duration"=>intval($_POST['cookie_duration']),
+						"cookie_num_view"=>intval($_POST['cookie_num_view'])
+						
 					);				
 				
 				$sql="UPDATE ".ADGURU_ADS_TABLE." 
@@ -85,7 +92,10 @@
 								"statusbar"=>intval($_POST['statusbar']), 
 								"menubar"=>intval($_POST['menubar']), 
 								"toolbar"=>intval($_POST['toolbar']), 
-								"resizable"=>intval($_POST['resizable'])
+								"resizable"=>intval($_POST['resizable']), 
+								"repeat_mode"=>($_POST['repeat_mode']),
+								"cookie_duration"=>intval($_POST['cookie_duration']),
+								"cookie_num_view"=>intval($_POST['cookie_num_view'])								
 							);					
 					}
 					else
@@ -110,7 +120,10 @@
 					"statusbar"=>intval($_POST['statusbar']), 
 					"menubar"=>intval($_POST['menubar']), 
 					"toolbar"=>intval($_POST['toolbar']), 
-					"resizable"=>intval($_POST['resizable'])
+					"resizable"=>intval($_POST['resizable']),
+					"repeat_mode"=>($_POST['repeat_mode']),
+					"cookie_duration"=>intval($_POST['cookie_duration']),
+					"cookie_num_view"=>intval($_POST['cookie_num_view'])
 				);			
 			
 			$sql="INSERT INTO ".ADGURU_ADS_TABLE." 
@@ -183,7 +196,10 @@
 					"statusbar"=>intval($_POST['statusbar']), 
 					"menubar"=>intval($_POST['menubar']), 
 					"toolbar"=>intval($_POST['toolbar']), 
-					"resizable"=>intval($_POST['resizable'])
+					"resizable"=>intval($_POST['resizable']),
+					"repeat_mode"=>($_POST['repeat_mode']),
+					"cookie_duration"=>intval($_POST['cookie_duration']),
+					"cookie_num_view"=>intval($_POST['cookie_num_view'])					
 				)
 			);		
 		}				
@@ -347,6 +363,20 @@
 		<a href="#" class="tooltip" title="Select the appropriate time for the popup to load."><img class="tipBtn" src="<?php echo ADGURU_PLUGIN_URL;?>images/tip.png" align="bottom" /></a>
 		</td>
 	</tr>
+	<tr>
+		<td><label>Show this Popup:</label></td>
+		<td>
+			<?php 
+			$popup_options=$camp['popup_options'];
+			if(isset($popup_options['repeat_mode'])){$repeat_mode=$popup_options['repeat_mode'];}else{$repeat_mode="day";}
+			if(isset($popup_options['cookie_duration'])){$cookie_duration=$popup_options['cookie_duration'];}else{$cookie_duration=7;}
+			if(isset($popup_options['cookie_num_view'])){$cookie_num_view=$popup_options['cookie_num_view'];}else{$cookie_num_view=1;}
+			?>
+			<input type="radio" name="repeat_mode" id="repeat_mode_day" value="day" <?php echo ($repeat_mode=="day")? ' checked="checked"':''; ?> /> <label for="repeat_mode_day">After Every</label> &nbsp;<input type="text" name="cookie_duration" size="2" value="<?php echo $cookie_duration; ?>" /> Days<br />
+			<input type="radio" name="repeat_mode" id="repeat_mode_view" value="view" <?php echo ($repeat_mode=="view")? ' checked="checked"':''; ?> /> <label for="repeat_mode_view"> View only</label> <input type="text" name="cookie_num_view" size="2" value="<?php echo $cookie_num_view;?>" /> Times<br />
+			<input type="radio" name="repeat_mode" id="repeat_mode_always" value="always" <?php echo ($repeat_mode=="always")? ' checked="checked"':''; ?> /> <label for="repeat_mode_always"> Always</label>
+		</td>
+	</tr>	
 	<tr>
 		<td><label>Window Options</label></td>
 		<td>

@@ -72,12 +72,16 @@ For more detail guide you should **[follow this page](http://wpadguru.com/docume
 
 
 == Changelog ==
+= 1.1.0 =
+**New feature:** option to set the limitation of a popup viewing. You can select after how many days a popup will be shown again  or how many times a popup will be appeared to a visitor.
 
 = 1.0.0 =
 * Initial release
 
 
 == Upgrade Notice ==
+= 1.1.0 =
+**New feature:** option to set the limitation of a popup viewing. You can select after how many days a popup will be shown again  or how many times a popup will be appeared to a visitor.
 
 = 1.0.0 =
 * Initial release

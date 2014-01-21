@@ -2,6 +2,11 @@
 		global $wpdb;
 		$camp=array();
 		$camp['active']=1;
+		$camp["popup_options"]=array(
+					"repeat_mode"=>"day", 
+					"cookie_duration"=>7,
+					"cookie_num_view"=>1
+				);		
 		if(isset($_GET['action'])){$action=$_GET['action'];}else{$action="";}
 		$camp_id=intval($_GET['cid']);
 		$camp_msg="";
@@ -16,6 +21,13 @@
 				$msg=$input_validation['message']; if($msg!=""){$input_error=true;}	
 				if(!$input_error)
 				{
+				$popup_options=array(
+						"repeat_mode"=>($_POST['repeat_mode']),
+						"cookie_duration"=>intval($_POST['cookie_duration']),
+						"cookie_num_view"=>intval($_POST['cookie_num_view'])
+						
+					);					
+				
 				$sql="UPDATE ".ADGURU_ADS_TABLE." 
 				SET 
 				name='".mysql_real_escape_string(stripslashes(trim($_POST['camp_name'])))."',  
@@ -32,14 +44,16 @@
 				own_html='".mysql_real_escape_string(stripslashes(trim($_POST['own_html'])))."' ,
 				popup_timing=".intval($_POST['popup_timing'])." , 
 				enable_stealth_mode=".intval($_POST['enable_stealth_mode']).", 
-				enable_exit_popup=".intval($_POST['enable_exit_popup'])." 
+				enable_exit_popup=".intval($_POST['enable_exit_popup']).", 
+				popup_options='".mysql_real_escape_string(serialize($popup_options))."' 				 
 				WHERE ad_type='modal_popup' AND id=".$camp_id;				
 				
 				$wpdb->query($sql);
 				$msg="Modal popup has been saved";
 				#getting date from db.
 				$sql="SELECT * FROM ".ADGURU_ADS_TABLE." WHERE ad_type='modal_popup' AND id=".$camp_id;
-				$camp=$wpdb->get_row($sql, ARRAY_A);							
+				$camp=$wpdb->get_row($sql, ARRAY_A);
+				$camp['popup_options']=unserialize($camp['popup_options']);								
 				}					
 			
 			}
@@ -48,7 +62,21 @@
 				#getting date from db.
 				$sql="SELECT * FROM ".ADGURU_ADS_TABLE." WHERE ad_type='modal_popup' AND id=".$camp_id;
 				$camp=$wpdb->get_row($sql, ARRAY_A);
-				if(!$camp){$camp=array();$camp['active']=1;}
+				if(!$camp)
+				{
+				$camp=array();
+				$camp['active']=1;
+				$camp["popup_options"]=array(
+							"repeat_mode"=>($_POST['repeat_mode']),
+							"cookie_duration"=>intval($_POST['cookie_duration']),
+							"cookie_num_view"=>intval($_POST['cookie_num_view'])								
+						);				
+				
+				}
+				else
+				{
+				$camp['popup_options']=unserialize($camp['popup_options']);
+				}
 			
 			}#end if(isset($_POST['save']))
 		}
@@ -60,8 +88,14 @@
 			$msg=$input_validation['message']; if($msg!=""){$input_error=true;}	
 			if(!$input_error)
 			{
+			$popup_options=array(
+					"repeat_mode"=>($_POST['repeat_mode']),
+					"cookie_duration"=>intval($_POST['cookie_duration']),
+					"cookie_num_view"=>intval($_POST['cookie_num_view'])
+				);
+			
 			$sql="INSERT INTO ".ADGURU_ADS_TABLE." 
-			(ad_type, name, description, width , height , active , code_type, html_code, image_source, image_link, link_target, iframe_source, own_html, popup_timing, enable_stealth_mode, enable_exit_popup ) 
+			(ad_type, name, description, width , height , active , code_type, html_code, image_source, image_link, link_target, iframe_source, own_html, popup_timing, enable_stealth_mode, enable_exit_popup, popup_options) 
 			VALUES (
 			'modal_popup', 
 			'".mysql_real_escape_string(stripslashes(trim($_POST['camp_name'])))."', 
@@ -78,7 +112,8 @@
 			 '".mysql_real_escape_string(stripslashes(trim($_POST['own_html'])))."', 
 			  ".intval($_POST['popup_timing']).", 
 			  ".intval($_POST['enable_stealth_mode']).", 
-			  ".intval($_POST['enable_exit_popup'])."  
+			  ".intval($_POST['enable_exit_popup'])." , 
+			  '".mysql_real_escape_string(serialize($popup_options))."' 
 			 )";			
 			$wpdb->query($sql);
 			$msg="New modal popup has been saved";							
@@ -97,6 +132,7 @@
 			$sql="SELECT * FROM ".ADGURU_ADS_TABLE." WHERE ad_type='modal_popup' AND id=".$copy_camp_id;
 			$camp=$wpdb->get_row($sql, ARRAY_A);
 			$camp['name']=$camp['name'].'_copy';
+			$camp['popup_options']=unserialize($camp['popup_options']);
 			}
 		}#end if ($camp_id)
 		
@@ -118,7 +154,13 @@
 			"own_html"=>stripslashes($_POST['own_html']), 
 			"popup_timing"=>$_POST['popup_timing'], 
 			"enable_stealth_mode"=>$_POST['enable_stealth_mode'], 
-			"enable_exit_popup"=>$_POST['enable_exit_popup']
+			"enable_exit_popup"=>$_POST['enable_exit_popup'], 
+			"popup_options"=>array(
+					"repeat_mode"=>($_POST['repeat_mode']),
+					"cookie_duration"=>intval($_POST['cookie_duration']),
+					"cookie_num_view"=>intval($_POST['cookie_num_view'])					
+				)			
+			
 			);		
 		}				
 			
@@ -269,7 +311,7 @@
 		<td>
 		<select name="popup_timing" id="popup_timing">
 			<option value="0" <?php if($camp['popup_timing']=="0"){ ?> selected="selected"<?php }?> >On Page Load</option>
-			<option value="-1" <?php if($camp['popup_timing']=="-1"){ ?> selected="selected"<?php }?> >Exit Popup Only</option>
+			<option value="-1" <?php if($camp['popup_timing']=="-1"){ ?> selected="selected"<?php }?> disabled="disabled" >Exit Popup Only</option>
 			<option value="3" <?php if($camp['popup_timing']=="3"){ ?> selected="selected"<?php }?> >3 Second Delay</option>
 			<option value="5" <?php if($camp['popup_timing']=="5"){ ?> selected="selected"<?php }?> >5 Second Delay</option>
 			<option value="10" <?php if($camp['popup_timing']=="10"){ ?> selected="selected"<?php }?> >10 Second Delay</option>
@@ -280,6 +322,22 @@
 		<a href="#" class="tooltip" title="Select the appropriate time for the popup to load."><img class="tipBtn" src="<?php echo ADGURU_PLUGIN_URL;?>images/tip.png" align="bottom" /></a>
 		</td>
 	</tr>
+	
+	<tr>
+		<td><label>Show this Popup:</label></td>
+		<td>
+			<?php 
+			$popup_options=$camp['popup_options'];
+			if(isset($popup_options['repeat_mode'])){$repeat_mode=$popup_options['repeat_mode'];}else{$repeat_mode="day";}
+			if(isset($popup_options['cookie_duration'])){$cookie_duration=$popup_options['cookie_duration'];}else{$cookie_duration=7;}
+			if(isset($popup_options['cookie_num_view'])){$cookie_num_view=$popup_options['cookie_num_view'];}else{$cookie_num_view=1;}
+			?>
+			<input type="radio" name="repeat_mode" id="repeat_mode_day" value="day" <?php echo ($repeat_mode=="day")? ' checked="checked"':''; ?> /> <label for="repeat_mode_day">After Every</label> &nbsp;<input type="text" name="cookie_duration" size="2" value="<?php echo $cookie_duration; ?>" /> Days<br />
+			<input type="radio" name="repeat_mode" id="repeat_mode_view" value="view" <?php echo ($repeat_mode=="view")? ' checked="checked"':''; ?> /> <label for="repeat_mode_view"> View only </label> <input type="text" name="cookie_num_view" size="2" value="<?php echo $cookie_num_view;?>" /> Times <br />
+			<input type="radio" name="repeat_mode" id="repeat_mode_always" value="always" <?php echo ($repeat_mode=="always")? ' checked="checked"':''; ?> /> <label for="repeat_mode_always"> Always</label>
+		</td>
+	</tr>
+	
 	<tr>
 		<td colspan="2"><br />
 		<input disabled="disabled" type="checkbox" value="1" id="enable_exit_popup" name="enable_exit_popup" <?php echo  ($camp['enable_exit_popup'])? 'checked="checked"':''?> /><label for="enable_exit_popup"> Enable Exit Popup</label>

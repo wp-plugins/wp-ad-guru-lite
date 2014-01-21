@@ -5,18 +5,19 @@
 	Plugin URI: http://wpadguru.com
 	Author: oneTarek
 	Author URI: http://onetarek.com
-	Version: 1.0.0
+	Version: 1.1.0
 	
 */
 
-define ( 'ADGURU_VERSION', '1.0.0');
+define ( 'ADGURU_VERSION', '1.1.0');
 define ( 'ADGURU_DOCUMENTAION_URL', 'http://wpadguru.com/documentation/');
 define ( 'ADGURU_PLUGIN_FILE', __FILE__);
 define ( 'ADGURU_PLUGIN_DIR', dirname(__FILE__)); // Plugin Directory
 define ( 'ADGURU_PLUGIN_URL', plugin_dir_url(__FILE__)); // with forward slash (/). Plugin URL (for http requests).
 define ( 'ADGURU_PLUGIN_SLUG', 'adguru');
 define ( 'ADGURU_API_URL', ADGURU_PLUGIN_URL."api/api.php");
-define ( 'ADGURU_ADMIN_API_URL', ADGURU_PLUGIN_URL."api/admin_api.php");
+define ( 'ADGURU_ADMIN_API_URL', ADGURU_PLUGIN_URL."api/admin_api.php");+
+define ( 'ADGURU_COOKIE_PREFIX', "adguru_");
 
 global $wpdb;
 #adguru tables
@@ -109,6 +110,19 @@ function adguru_print_modal_popup_script()
 			if(!isset($adGuru->ads[$ad_id])) return false;
 			$ad=$adGuru->ads[$ad_id];
 			if($ad->enable_stealth_mode && !(isset($_GET['kw'])|| isset($_GET['KW']) )){return false;}
+			
+			$popup_options=unserialize($ad->popup_options);
+			if(!is_array($popup_options))
+			{
+				$popup_options=array(
+								  'repeat_mode'=>'day', 
+								  'cookie_duration'=>7,
+								  'cookie_num_view'=>1								  
+								  );
+			}
+			$ad->popup_options=$popup_options;
+			//echo "<pre>"; print_r($ad); echo "</pre>";			
+			
 			echo '<span id="adguru_modal_content">';
 			switch($ad->code_type)
 			{
@@ -133,15 +147,18 @@ function adguru_print_modal_popup_script()
 			<script type="text/javascript" src="<?php echo ADGURU_PLUGIN_URL ?>js/bowser-master/bowser.min.js"></script>
 			 <script type="text/javascript" src="<?php echo ADGURU_PLUGIN_URL ?>/js/modalengine.js?var=<?php echo ADGURU_VERSION ?>"></script>	
 		
-				<script type="text/javascript">
-				adguru_modal_engine.configure({
-					width : "<?php echo $ad->width ?>",
-					height : "<?php echo $ad->height ?>",
-					delay : "<?php echo $ad->popup_timing?>",
-					<?php if($ad->enable_exit_popup){?>enableExitAlert: "1", <?php }?>
-					exitAlertText: "Wait! Before you go...<br><br>Please take a look at this special offer."
-				
-				})
+				<script type="text/javascript">				
+				if(adguru_should_show(<?php echo $ad->id; ?>, "<?php echo $popup_options['repeat_mode']; ?>" , <?php echo $popup_options['cookie_duration']; ?>, <?php echo $popup_options['cookie_num_view']; ?>))
+				{
+					adguru_modal_engine.configure({
+						width : "<?php echo $ad->width ?>",
+						height : "<?php echo $ad->height ?>",
+						delay : "<?php echo $ad->popup_timing?>",
+						<?php if($ad->enable_exit_popup){?>enableExitAlert: "1", <?php }?>
+						exitAlertText: "Wait! Before you go...<br><br>Please take a look at this special offer."
+					
+					})
+				}
 				</script>
 					
 		<?php 
@@ -183,8 +200,14 @@ function adguru_print_window_popup_script()
 								  'menubar' =>0, 
 								  'toolbar' =>0, 
 								  'resizable' =>0,
+								  'repeat_mode'=>'day', 
+								  'cookie_duration'=>7,
+								  'cookie_num_view'=>1								  
+								  
 								  );
 			}
+			$ad->popup_options=$popup_options;
+			//echo "<pre>"; print_r($ad); echo "</pre>";
 			
 			$scrollbar=($popup_options['scrollbar'])?'yes':'no';
 			$locationbar=($popup_options['locationbar'])?'yes':'no';
@@ -201,6 +224,10 @@ function adguru_print_window_popup_script()
 			?>
 				<script type="text/javascript">
 				var adGuruPopupWindowCalled=false;
+				if(!adguru_should_show(<?php echo $ad->id; ?>, "<?php echo $popup_options['repeat_mode']; ?>" , <?php echo $popup_options['cookie_duration']; ?>, <?php echo $popup_options['cookie_num_view']; ?>))
+				{
+				adGuruPopupWindowCalled=true;
+				}
 				function callAdGuruPopupWindow()
 				{
 					if(adGuruPopupWindowCalled==true){return false;}
@@ -237,6 +264,7 @@ add_action( 'wp_enqueue_scripts', 'adguru_enqueue_scripts' );
 function adguru_head()
 {?>
 	<script language="javascript" type="text/javascript">
+	var ADGURU_COOKIE_PREFIX="<?php echo ADGURU_COOKIE_PREFIX ?>";
 	<!--
 	var adGuruWin=null;
 	function adGuruPopupWindow(url,title,width,height,position, scroll, locationbar, directories, status , menubar, toolbar , resizable)
@@ -248,6 +276,55 @@ function adguru_head()
 	adGuruWin=window.open(url,title,settings);
 	}
 	// -->
+	
+	function adguru_setCookie(cname,cvalue,exdays)
+	{
+	var d = new Date();
+	d.setTime(d.getTime()+(exdays*24*60*60*1000));
+	var expires = "expires="+d.toGMTString();
+	document.cookie = cname + "=" + cvalue + "; " + expires;
+	} 	
+
+	function adguru_getCookie(cname)
+	{
+	var name = cname + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0; i<ca.length; i++)
+	  {
+	  var c = ca[i].trim();
+	  if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+	  }
+	return "";
+	}
+
+	function adguru_should_show(ad_id, repeat_mode , cookie_duration, num_view)
+	{
+		var cname="";var c;	var should_show=false;
+		switch(repeat_mode)
+		{
+		case "day":
+			{
+			
+			cname=ADGURU_COOKIE_PREFIX+"ad_"+ad_id+"_day";c=parseInt(adguru_getCookie(cname));if(isNaN(c)){c=0;}
+			if(c!=0){should_show=false;}else{should_show=true; adguru_setCookie(cname,1,cookie_duration);}
+			break;
+			}
+		case "view":
+			{
+			cname=ADGURU_COOKIE_PREFIX+"ad_"+ad_id+"_view";c=parseInt(adguru_getCookie(cname));if(isNaN(c)){c=0;}
+			if(c>=num_view){should_show=false;}else{should_show=true; adguru_setCookie(cname,c+1,365); return should_show;}
+			break;
+			}
+		case "always":
+			{
+			should_show=true;
+			break;
+			}	
+		
+		}
+		return should_show;
+	}	
+		
 	</script>	
 	
 <?php 
