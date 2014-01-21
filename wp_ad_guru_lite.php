@@ -120,6 +120,7 @@ function adguru_print_modal_popup_script()
 								  'cookie_num_view'=>1								  
 								  );
 			}
+			if(!isset($popup_options['repeat_mode'])){$popup_options['repeat_mode']="day"; $popup_options['cookie_duration']=7;$popup_options['cookie_num_view']=1;}
 			$ad->popup_options=$popup_options;
 			//echo "<pre>"; print_r($ad); echo "</pre>";			
 			
@@ -220,11 +221,11 @@ function adguru_print_window_popup_script()
 			{
 				$popup_url=$ad->iframe_source;
 			}
-			
+			if(!isset($popup_options['repeat_mode'])){$popup_options['repeat_mode']="day"; $popup_options['cookie_duration']=7;$popup_options['cookie_num_view']=1;}
 			?>
 				<script type="text/javascript">
 				var adGuruPopupWindowCalled=false;
-				if(!adguru_should_show(<?php echo $ad->id; ?>, "<?php echo $popup_options['repeat_mode']; ?>" , <?php echo $popup_options['cookie_duration']; ?>, <?php echo $popup_options['cookie_num_view']; ?>))
+				if(!adguru_should_show(<?php echo $ad->id; ?>, "<?php echo $popup_options['repeat_mode']; ?>" , <?php echo intval($popup_options['cookie_duration']); ?>, <?php echo intval($popup_options['cookie_num_view']); ?>))
 				{
 				adGuruPopupWindowCalled=true;
 				}
