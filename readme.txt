@@ -70,6 +70,15 @@ Complete advertising management plugin for WordPress. Monetize your website traf
 = How To Use WP Ad Guru: =
 For more detail guide you should **[follow this page](http://wpadguru.com/documentation/)**.
 
+== Screenshots ==
+
+1. Set Banner Ad to Zone
+2. Add New Banner
+3. All Banners
+4. Add New Modal Popup
+5. Add New Window Popup
+
+
 
 == Changelog ==
 = 1.1.0 =
