@@ -5,11 +5,11 @@
 	Plugin URI: http://wpadguru.com
 	Author: oneTarek
 	Author URI: http://onetarek.com
-	Version: 1.1.0
+	Version: 1.2.0
 	
 */
 
-define ( 'ADGURU_VERSION', '1.1.0');
+define ( 'ADGURU_VERSION', '1.2.0');
 define ( 'ADGURU_DOCUMENTAION_URL', 'http://wpadguru.com/documentation/');
 define ( 'ADGURU_PLUGIN_FILE', __FILE__);
 define ( 'ADGURU_PLUGIN_DIR', dirname(__FILE__)); // Plugin Directory
@@ -283,7 +283,7 @@ function adguru_head()
 	var d = new Date();
 	d.setTime(d.getTime()+(exdays*24*60*60*1000));
 	var expires = "expires="+d.toGMTString();
-	document.cookie = cname + "=" + cvalue + "; " + expires;
+	document.cookie = cname + "=" + cvalue + "; " + expires + "; path=/";
 	} 	
 
 	function adguru_getCookie(cname)

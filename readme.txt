@@ -3,8 +3,8 @@ Contributors: onetarek
 Buy link: http://wpadguru.com/
 Tags: Ad Manager,Ads, Banner, Modal Popup, Popup Window, Advertising, Management, Widget, Shotcode, Ad Zone, Geo Location, Ad Rotator, Ad Slider
 Requires at least: 3.6.0
-Tested up to: 3.8.0
-Stable tag: 1.1.0
+Tested up to: 3.8.1
+Stable tag: 1.2.0
 License: GPLv2+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,9 @@ For more detail guide you should **[follow this page](http://wpadguru.com/docume
 
 
 == Changelog ==
+= 1.2.0 =
+Bug Fix: Popup cookies were not being set as site-wide.
+ 
 = 1.1.0 =
 **New feature:** option to set the limitation of a popup viewing. You can select after how many days a popup will be shown again  or how many times a popup will be appeared to a visitor.
 
@@ -89,6 +92,9 @@ For more detail guide you should **[follow this page](http://wpadguru.com/docume
 
 
 == Upgrade Notice ==
+= 1.2.0 =
+Bug Fix: Popup cookies were not being set as site-wide.
+
 = 1.1.0 =
 **New feature:** option to set the limitation of a popup viewing. You can select after how many days a popup will be shown again  or how many times a popup will be appeared to a visitor.
 
