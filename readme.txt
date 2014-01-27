@@ -16,6 +16,7 @@ Complete advertising management system for WordPress. Manage banner ads, modal p
 Complete advertising management plugin for WordPress. Monetize your website traffics perfectly. Ensure maximum earning from your blog. Convert your each traffic to money. Manage banner ads, modal popup and window popup. Show ads by zones. Show perfect ads to your visitor based on Geo Location and multiple conditions of visited pages. Sow one more ads in same place like carousel-slider. Rotate ads based on percentage you set. Set individual banner and popups for each blog post. Promote your affiliate links, email subscription form, any special offers using modal popups. You will discover thousands of different technique to make money by using this plugin.
 
 **Features included in Free Vesion:**
+
 *   **Banner ads** (HTML, JavaScript).
 *   **Modal popup ads** (HTML, JavaScript).
 *   **Popup window ads** (URL in popup window).
