@@ -15,7 +15,7 @@ Complete advertising management system for WordPress. Manage banner ads, modal p
 'WP Ad Guru Lite' is a free version of the premium plugin **[WP Ad Guru](http://wpadguru.com/)** for all WordPress user.  
 Complete advertising management plugin for WordPress. Monetize your website traffics perfectly. Ensure maximum earning from your blog. Convert your each traffic to money. Manage banner ads, modal popup and window popup. Show ads by zones. Show perfect ads to your visitor based on Geo Location and multiple conditions of visited pages. Sow one more ads in same place like carousel-slider. Rotate ads based on percentage you set. Set individual banner and popups for each blog post. Promote your affiliate links, email subscription form, any special offers using modal popups. You will discover thousands of different technique to make money by using this plugin.
 
-**Features included in Free Vesion:**
+**Features included in Free Version:**
 
 *   **Banner ads** (HTML, JavaScript).
 *   **Modal popup ads** (HTML, JavaScript).
@@ -36,7 +36,8 @@ Complete advertising management plugin for WordPress. Monetize your website traf
 *   Displaying ads by using **Ads Zone** selector.
 *   A single zone can display **thousands of different ads** by applying following features.
 *   Show **multiple ads in same** place/ad-zone as carousel/slider.
-*   **Rotate banner ads** based on defined percentage of each advertisement in a group (slide).
+*   **Rotate banner ads** based on defined percentage of each advertisement in a group (slide) for a specific zone in a specific page.
+*   **Rotate modal popup and window popup** based on defined percentage of each popup in a specific page.
 *   Show ads based on **GeoLocation (country)**.
 *   Show different ads by multiple condition of visited page.
 *   Define ads for **side-wide (default)**.
