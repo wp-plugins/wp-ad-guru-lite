@@ -36,8 +36,8 @@ Complete advertising management plugin for WordPress. Monetize your website traf
 *   Displaying ads by using **Ads Zone** selector.
 *   A single zone can display **thousands of different ads** by applying following features.
 *   Show **multiple ads in same** place/ad-zone as carousel/slider.
-*   **Rotate banner ads** based on defined percentage of each advertisement in a group (slide).
-*   **Rotate modal and window poup ads** based on defined percentage of each popup in a group (slide).
+*   **Rotate banner ads** based on defined percentage of each advertisement in a group (slide) for a specific zone in a specific page.
+*   **Rotate modal popup and window popup** based on defined percentage of each popup in a specific page.
 *   Show ads based on **GeoLocation (country)**.
 *   Show different ads by multiple condition of visited page.
 *   Define ads for **side-wide (default)**.
