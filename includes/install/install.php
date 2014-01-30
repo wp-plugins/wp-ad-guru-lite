@@ -24,7 +24,7 @@ require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
    
    $adguru_ads_sql = "CREATE TABLE $adguru_ads_table (
 	  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-	  `ad_type` varchar(15) NOT NULL DEFAULT 'banner',
+	  `ad_type` varchar(20) NOT NULL DEFAULT 'banner',
 	  `name` varchar(100) NOT NULL,
 	  `description` varchar(300) DEFAULT NULL,
 	  `width` int(11) DEFAULT '300',
@@ -48,10 +48,10 @@ require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	
    $adguru_links_sql = "CREATE TABLE $adguru_links_table (
 	  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-	  `ad_type` varchar(15) NOT NULL DEFAULT 'banner',
+	  `ad_type` varchar(20) NOT NULL DEFAULT 'banner',
 	  `zone_id` bigint(20) NOT NULL DEFAULT '0',
-	  `page_type` varchar(15) NOT NULL DEFAULT '--',
-	  `taxonomy` varchar(20) NOT NULL DEFAULT '--',
+	  `page_type` varchar(20) NOT NULL DEFAULT '--',
+	  `taxonomy` varchar(50) NOT NULL DEFAULT '--',
 	  `term` varchar(50) NOT NULL DEFAULT '--',
 	  `object_id` bigint(20) NOT NULL DEFAULT '0',
 	  `country_code` varchar(3) NOT NULL DEFAULT '--',
