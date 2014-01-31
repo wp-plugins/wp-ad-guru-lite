@@ -95,7 +95,7 @@ For more detail guide you should **[follow this page](http://wpadguru.com/docume
 
 == Changelog ==
 = 1.3.0 =
-Bug Fix: Data was not saving for taxonomy name length grater than 20. Database field length has been increased 20 to 50
+Bug Fix: Data was not saving for taxonomy name length greater than 20. Database field length has been increased 20 to 50
 
 = 1.2.0 =
 Bug Fix: Popup cookies were not being set as site-wide.
