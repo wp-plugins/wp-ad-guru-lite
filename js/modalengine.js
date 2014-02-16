@@ -1,3 +1,146 @@
+	var adg_yt_api_script_loaded=false;
+	var adg_videoSrcBackup="";
+	var adg_videoFrameBackup=null;
+	var adg_yt_player=null;
+	var adg_disbaleVideoPlayerControl=false;
+	var adg_is_yt=false;
+	var adg_yt_playing=false;
+	var adg_yt_paused=false;
+	var adg_yt_is_autoplay=false;
+	var adg_dialogOpened=false;
+	
+	function adg_stopPlayer() { 
+		if(!adg_disbaleVideoPlayerControl)
+		{
+			
+			if(adg_is_yt && adg_yt_player!=null)
+			{
+				try {
+					
+					adg_yt_player.pauseVideo();
+					adg_yt_paused=true;
+				} catch(err) {}
+			return;
+			}			
+			//do non youtube vidoe or any other iframe	
+			adg_backup_video_frames();		
+		
+		}//end if(!adg_disbaleVideoPlayerControl)
+	}
+	function adg_play_if_not_playing() { 
+		if(!adg_disbaleVideoPlayerControl && adg_dialogOpened==true)
+		{
+			
+			if(adg_is_yt && adg_yt_player != null)
+			{
+			//============do for youtbe=============
+				var isiPad = navigator.userAgent.match(/iPad/i) != null;
+				var isiPod = navigator.userAgent.match(/iPod/i) != null;
+				if (isiPad || isiPod) {} 
+				else 
+				{
+					if(adg_yt_is_autoplay==true)
+					{
+						try {
+						adg_yt_player.playVideo();	
+						adg_yt_playing=true;
+						} catch(err) {}
+					}					
+				}				
+			return;
+			}
+			//do non youtube vidoe or any other iframe
+			if(adg_videoFrameBackup != null){
+				jQuery("#adg_vframe_place").replaceWith(adg_videoFrameBackup);					
+			}
+		
+		
+		
+		}//end if(!adg_disbaleVideoPlayerControl)
+		
+	}
+
+function adg_onPlayerStateChange(event) {
+   if(event.data == YT.PlayerState.PLAYING && adg_dialogOpened==false)
+   {
+   event.target.pauseVideo();
+   adg_yt_paused=true;
+   }
+   else
+   {
+   		if(event.data == YT.PlayerState.PLAYING){adg_yt_playing=true;}
+   }
+}
+
+function adg_onPlayerReady(event) {
+	if(adg_yt_is_autoplay==true || adg_yt_paused==true)
+	{	
+		event.target.playVideo();
+	}	
+}
+
+function onYouTubePlayerAPIReady() {
+	var frames=jQuery("#adguru_modal_content iframe");
+	
+	if(frames.size())
+	{
+		for(i=0; i<frames.size(); i++)
+		{	
+			if (/^https?:\/\/(?:www\.)?youtube(?:-nocookie)?\.com(\/|$)/i.test(frames[i].src))
+			{
+				adg_is_yt=true;
+				if(frames[i].src.search("autoplay=1") !=-1){adg_yt_is_autoplay=true;}
+				var frm=frames[i];
+				var frameID;
+				if(frm.id){frameID=frm.id;}else{frm.id="adg_yt_video"; frameID = frm.id;}
+				adg_yt_player = new YT.Player(frameID, {
+				  events: {
+					'onReady': adg_onPlayerReady,
+					'onStateChange': adg_onPlayerStateChange
+				  	}
+				});				
+				
+				break;	
+			}
+		}
+	}
+	
+}
+
+function adg_backup_video_frames()
+{	
+	var vframes=jQuery("#adguru_modal_content iframe");
+	if(vframes.size())
+	{
+	var vframe=vframes[0]; var vsrc=vframe.src;	
+	var isYoutube = vsrc.match(/youtube.com/i) != null;
+		if(!isYoutube)
+		{			
+			adg_videoFrameBackup=vframe;
+			jQuery(vframe).replaceWith('<span id="adg_vframe_place">Place for Video</span>');
+			adg_videoSrcBackup=vsrc;	
+		}
+		else
+		{
+			adg_is_yt=true;
+			if(adg_yt_api_script_loaded==false)
+			{
+			//including youtube player api script
+			//http://www.youtube.com/player_api
+				  var tag = document.createElement('script');
+				  tag.src = "https://www.youtube.com/iframe_api";
+				  var firstScriptTag = document.getElementsByTagName('script')[0];
+				  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+			//=======end youtube player api script==========
+			adg_yt_api_script_loaded=true;
+			}		
+		}
+	
+	}
+	
+}
+
+//===================================MAIN FUNCTIONS========================================================
 (function ($) {
 	var root = this;
 	var timeOut = Number.NaN;
@@ -9,19 +152,23 @@
 	var hasFired = 0;
 	var showPopup=true;
 	var enableExitAlert = false;
-	var disableExitAlert=false;
+	var disableExitAlert=true;
 	var exitAlertText = "Before you go, please take a look at this special offer...";
-	var disbaleVideoPlayerControl=false;//added from version 2.5 . There was an error when popup_source is only enter a link
+	
 	var maxModalFires = 2;
 	var dialog = false;
 	var dialogOpened = false;
 	var documentLoads = 0;
+
+
+
 	function start() {		
 			initModal();
 	}
 
 	function initModal() {
 			if (!dialog) {
+				adg_backup_video_frames();
 				$('#adguru_modal_content').show();
 				$('#adguru_modal_content').modal({
 					onOpen: function (dl) {
@@ -111,27 +258,15 @@
 	function triggerModal() {
 		if (!dialogOpened && hasFired < maxModalFires) {
 			dialogOpened = true;
-				modalOpen(dialog);		 
+			adg_dialogOpened=true;
+			modalOpen(dialog);
+			adg_play_if_not_playing();//added 16-02-2014
 		}
 		clearTimeout(timeOut);
 	
 	}
 
-	function stopPlayer() { 
-		if(!disbaleVideoPlayerControl)
-		{
-		var $f = $("#exit-content");
-		$f[0].contentWindow.stopPlayer(); 
-		}
-	}
-	function play_if_not_playing() {
-		if(!disbaleVideoPlayerControl)
-		{
-		var $f = $("#exit-content");
-		$f[0].contentWindow.play_if_not_playing();  //function declared in the content of iFrame
-		}
-		
-	}
+
 	function modalOpen(dialog, speed) {
 		enableExitAlert=false; //to disable window message when opening modal.
 		window.scrollTo(0, 0);
@@ -147,12 +282,14 @@
 					})
 				})
 			}
+			
 		
 	}
 	function modalClose(dialog) {
 		$('.simplemodal-close').click(function(){modalCloseSecondTime();});
-		stopPlayer(); //return false;
+		adg_stopPlayer(); //return false;
 		dialogOpened = false;
+		adg_dialogOpened=false;
 		hasFired++; // disabled by oneTarek. We need to show the modal window for every time when user clkck the "stay on tis page" alert button
 			dialog.data.fadeOut('fast', function () {
 				dialog.container.hide('fast', function () {
@@ -173,9 +310,9 @@
 	root.adguru_modal_engine = root.adguru_modal_engine || {};
 	
 	root.adguru_modal_engine.call = function () {
-		if ($("#exit-content").is(":visible")) {
-			play_if_not_playing()
-		}
+		//if ($("#adguru_modal_content").is(":visible")) {
+			adg_play_if_not_playing()
+		//}
 	};
 	root.adguru_modal_engine.configure = function (p) {
 

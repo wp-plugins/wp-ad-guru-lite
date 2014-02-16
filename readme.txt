@@ -4,7 +4,7 @@ Buy link: http://wpadguru.com/
 Tags: Ad Manager,Ads, Banner, Modal Popup, Popup Window, Advertising, Management, Widget, Shotcode, Ad Zone, Geo Location, Ad Rotator, Ad Slider
 Requires at least: 3.6.0
 Tested up to: 3.8.1
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,11 @@ For more detail guide you should **[follow this page](http://wpadguru.com/docume
 
 
 == Changelog ==
+= 1.4.0 =
+Bug Fix: Modal popup was not displayed on IE8
+Bug Fix: It was needed to click twice on modal popup close button to close popup. A JS error was being occurred on first click.
+Bug Fix: Video was running even after closing the modal popup on google chrome. If popup contain autoplay enabled video iframes , video was started in background before the popup appeared.
+ 
 = 1.3.0 =
 Bug Fix: Data was not saving for taxonomy name length greater than 20. Database field length has been increased 20 to 50
 
@@ -108,6 +113,11 @@ Bug Fix: Popup cookies were not being set as site-wide.
 
 
 == Upgrade Notice ==
+= 1.4.0 =
+Bug Fix: Modal popup was not displayed on IE8
+Bug Fix: It was needed to click twice on modal popup close button to close popup. A JS error was being occurred on first click.
+Bug Fix: Video was running even after closing the modal popup on google chrome. If popup contain autoplay enabled video iframes , video was started in background before the popup appeared.
+
 = 1.3.0 =
 Bug Fix: Data was not saving for taxonomy name length grater than 20. Database field length has been increased 20 to 50
 

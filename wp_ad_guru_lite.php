@@ -5,11 +5,11 @@
 	Plugin URI: http://wpadguru.com
 	Author: oneTarek
 	Author URI: http://onetarek.com
-	Version: 1.3.0
+	Version: 1.4.0
 	
 */
 
-define ( 'ADGURU_VERSION', '1.3.0');
+define ( 'ADGURU_VERSION', '1.4.0');
 define ( 'ADGURU_DOCUMENTAION_URL', 'http://wpadguru.com/documentation/');
 define ( 'ADGURU_PLUGIN_FILE', __FILE__);
 define ( 'ADGURU_PLUGIN_DIR', dirname(__FILE__)); // Plugin Directory
@@ -129,24 +129,33 @@ function adguru_print_modal_popup_script()
 			{
 				case "html":
 				{
-					echo $ad->html_code;
+					$html_code=$ad->html_code;
+					#add https with youtube video iframe src. without https google chrome returns javascript warnings.
+					preg_match('/<iframe[^>]*src="([^"]*)"[^>]*>.*<\/iframe>/', $html_code, $matches);
+					$frameurl = $matches[1];
+					if(strpos($frameurl, "youtube.com") !==false && strpos($frameurl, "http:") !==0 && strpos($frameurl, "https:")!==0)
+					{
+					$new_frameurl="https:".$frameurl; 
+					$html_code=str_replace($frameurl, $new_frameurl, $html_code); 
+					}
+					echo $html_code;
 				break;
 				}				
 			}#end switch			
 			echo '</span>';?>
 			<!-- preload the images -->
 			<div style='display:none'>
-				<img src='<?php echo ADGURU_PLUGIN_URL ?>js/simplemodal-1.4.4/img/basic/x.png' alt='' />
+				<img src='<?php echo ADGURU_PLUGIN_URL ?>js/simplemodal/img/basic/x.png' alt='' />
 			</div>
 			<style type="text/css">#adguru_modal_content{ background:#ffffff; display:none; width:<?php echo $ad->width ?>px;  height:<?php echo $ad->height ?>px; overflow:hidden;}</style>
-			<link type='text/css' href='<?php echo ADGURU_PLUGIN_URL ?>js/simplemodal-1.4.4/css/basic.css?var=<?php echo ADGURU_VERSION ?>' rel='stylesheet' media='screen' />
+			<link type='text/css' href='<?php echo ADGURU_PLUGIN_URL ?>js/simplemodal/css/basic.css?var=<?php echo ADGURU_VERSION ?>' rel='stylesheet' media='screen' />
 			<!-- IE6 "fix" for the close png image -->
 			<!--[if lt IE 7]>
-			<link type='text/css' href='<?php echo ADGURU_PLUGIN_URL ?>js/simplemodal-1.4.4/css/basic_ie.css' rel='stylesheet' media='screen' />
+			<link type='text/css' href='<?php echo ADGURU_PLUGIN_URL ?>js/simplemodal/css/basic_ie.css' rel='stylesheet' media='screen' />
 			<![endif]-->
-			<script type='text/javascript' src='<?php echo ADGURU_PLUGIN_URL ?>js/simplemodal-1.4.4/js/jquery.simplemodal.js'></script>
-			<script type="text/javascript" src="<?php echo ADGURU_PLUGIN_URL ?>js/bowser-master/bowser.min.js"></script>
-			 <script type="text/javascript" src="<?php echo ADGURU_PLUGIN_URL ?>/js/modalengine.js?var=<?php echo ADGURU_VERSION ?>"></script>	
+			<script type='text/javascript' src='<?php echo ADGURU_PLUGIN_URL ?>js/simplemodal/js/jquery.simplemodal.min.js?var=<?php echo ADGURU_VERSION ?>'></script>
+			<script type="text/javascript" src="<?php echo ADGURU_PLUGIN_URL ?>js/bowser-master/bowser.min.js?var=<?php echo ADGURU_VERSION ?>"></script>
+			<script type="text/javascript" src="<?php echo ADGURU_PLUGIN_URL ?>js/modalengine.js?var=<?php echo ADGURU_VERSION ?>"></script>	
 		
 				<script type="text/javascript">				
 				if(adguru_should_show(<?php echo $ad->id; ?>, "<?php echo $popup_options['repeat_mode']; ?>" , <?php echo $popup_options['cookie_duration']; ?>, <?php echo $popup_options['cookie_num_view']; ?>))
@@ -277,7 +286,14 @@ function adguru_head()
 	adGuruWin=window.open(url,title,settings);
 	}
 	// -->
-	
+	//added in 1.4.0
+	//IE8 doesnt support the trim function. But you can define it like this: http://stackoverflow.com/questions/11219731/trim-function-doesnt-work-in-ie8
+	if(typeof String.prototype.trim !== 'function') {
+	  String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/g, ''); 
+	  }
+	}	
+	//end added in 1.4.0
 	function adguru_setCookie(cname,cvalue,exdays)
 	{
 	var d = new Date();
