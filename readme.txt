@@ -4,7 +4,7 @@ Buy link: http://wpadguru.com/
 Tags: Ad management, Ad Manager,Ads, Banner, Modal Popup, Popup Window, Advertising, Management, Widget, Shotcode, Ad Zone, Geo Location, Ad Rotator, Ad Slider
 Requires at least: 3.6.0
 Tested up to: 4.0
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GPLv2+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
