@@ -31,7 +31,7 @@
 			foreach($keyword_list as $key)
 			{
 			$i++;
-			$condition.="name LIKE '%".mysql_real_escape_string($key)."%' ";
+			$condition.="name LIKE '%".esc_sql($key)."%' ";
 				if($i!=$tot_key){$condition.=" AND ";}
 			}
 			

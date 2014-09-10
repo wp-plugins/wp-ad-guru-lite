@@ -30,7 +30,7 @@
 			foreach($keyword_list as $key)
 			{
 			$i++;
-			$condition.="ad_type='modal_popup' AND name LIKE '%".mysql_real_escape_string($key)."%' ";
+			$condition.="ad_type='modal_popup' AND name LIKE '%".esc_sql($key)."%' ";
 				if($i!=$tot_key){$condition.=" AND ";}
 			}
 			

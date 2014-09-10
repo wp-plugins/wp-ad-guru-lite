@@ -5,11 +5,11 @@
 	Plugin URI: http://wpadguru.com
 	Author: oneTarek
 	Author URI: http://onetarek.com
-	Version: 1.4.0
+	Version: 1.5.0
 	
 */
 
-define ( 'ADGURU_VERSION', '1.4.0');
+define ( 'ADGURU_VERSION', '1.5.0');
 define ( 'ADGURU_DOCUMENTAION_URL', 'http://wpadguru.com/documentation/');
 define ( 'ADGURU_PLUGIN_FILE', __FILE__);
 define ( 'ADGURU_PLUGIN_DIR', dirname(__FILE__)); // Plugin Directory

@@ -17,8 +17,8 @@
 				{
 				$sql="UPDATE ".ADGURU_ZONES_TABLE." 
 				SET 
-				name='".mysql_real_escape_string(stripslashes(trim($_POST['zone_name'])))."',  
-				description='".mysql_real_escape_string(stripslashes(trim($_POST['description'])))."', 
+				name='".esc_sql(stripslashes(trim($_POST['zone_name'])))."',  
+				description='".esc_sql(stripslashes(trim($_POST['description'])))."', 
 				width=".intval($_POST['width'])." , 
 				height=".intval($_POST['height'])." , 
 				active=".intval($_POST['active'])." 
@@ -51,8 +51,8 @@
 			$sql="INSERT INTO ".ADGURU_ZONES_TABLE." 
 			(name, description, width , height , active ) 
 			VALUES (
-			'".mysql_real_escape_string(stripslashes(trim($_POST['zone_name'])))."', 
-			'".mysql_real_escape_string(stripslashes(trim($_POST['description'])))."', 
+			'".esc_sql(stripslashes(trim($_POST['zone_name'])))."', 
+			'".esc_sql(stripslashes(trim($_POST['description'])))."', 
 			 ".intval($_POST['width']).", 
 			 ".intval($_POST['height']).", 
 			 ".intval($_POST['active'])."

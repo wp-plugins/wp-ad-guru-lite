@@ -18,18 +18,18 @@
 				{
 				$sql="UPDATE ".ADGURU_ADS_TABLE." 
 				SET 
-				name='".mysql_real_escape_string(stripslashes(trim($_POST['camp_name'])))."',  
-				description='".mysql_real_escape_string(stripslashes(trim($_POST['description'])))."', 
+				name='".esc_sql(stripslashes(trim($_POST['camp_name'])))."',  
+				description='".esc_sql(stripslashes(trim($_POST['description'])))."', 
 				width=".intval($_POST['width'])." , 
 				height=".intval($_POST['height'])." , 
 				active=".intval($_POST['active'])." , 
-				code_type='".mysql_real_escape_string(stripslashes(trim($_POST['code_type'])))."', 
-				html_code='".mysql_real_escape_string(stripslashes(trim($_POST['html_code'])))."', 
-				image_source='".mysql_real_escape_string(stripslashes(trim($_POST['image_source'])))."', 
-				image_link='".mysql_real_escape_string(stripslashes(trim($_POST['image_link'])))."', 
-				link_target='".mysql_real_escape_string(stripslashes(trim($_POST['link_target'])))."', 
-				iframe_source='".mysql_real_escape_string(stripslashes(trim($_POST['iframe_source'])))."', 
-				own_html='".mysql_real_escape_string(stripslashes(trim($_POST['own_html'])))."' 
+				code_type='".esc_sql(stripslashes(trim($_POST['code_type'])))."', 
+				html_code='".esc_sql(stripslashes(trim($_POST['html_code'])))."', 
+				image_source='".esc_sql(stripslashes(trim($_POST['image_source'])))."', 
+				image_link='".esc_sql(stripslashes(trim($_POST['image_link'])))."', 
+				link_target='".esc_sql(stripslashes(trim($_POST['link_target'])))."', 
+				iframe_source='".esc_sql(stripslashes(trim($_POST['iframe_source'])))."', 
+				own_html='".esc_sql(stripslashes(trim($_POST['own_html'])))."' 
 				WHERE ad_type='banner' AND id=".$camp_id;				
 				
 				$wpdb->query($sql);
@@ -61,18 +61,18 @@
 			(ad_type, name, description, width , height , active , code_type, html_code, image_source, image_link, link_target, iframe_source, own_html ) 
 			VALUES (
 			'banner', 
-			'".mysql_real_escape_string(stripslashes(trim($_POST['camp_name'])))."', 
-			'".mysql_real_escape_string(stripslashes(trim($_POST['description'])))."', 
+			'".esc_sql(stripslashes(trim($_POST['camp_name'])))."', 
+			'".esc_sql(stripslashes(trim($_POST['description'])))."', 
 			 ".intval($_POST['width']).", 
 			 ".intval($_POST['height']).", 
 			 ".intval($_POST['active']).", 
-			 '".mysql_real_escape_string(stripslashes(trim($_POST['code_type'])))."', 
-			 '".mysql_real_escape_string(stripslashes(trim($_POST['html_code'])))."', 
-			 '".mysql_real_escape_string(stripslashes(trim($_POST['image_source'])))."', 
-			 '".mysql_real_escape_string(stripslashes(trim($_POST['image_link'])))."', 
-			 '".mysql_real_escape_string(stripslashes(trim($_POST['link_target'])))."', 
-			 '".mysql_real_escape_string(stripslashes(trim($_POST['iframe_source'])))."', 
-			 '".mysql_real_escape_string(stripslashes(trim($_POST['own_html'])))."' 
+			 '".esc_sql(stripslashes(trim($_POST['code_type'])))."', 
+			 '".esc_sql(stripslashes(trim($_POST['html_code'])))."', 
+			 '".esc_sql(stripslashes(trim($_POST['image_source'])))."', 
+			 '".esc_sql(stripslashes(trim($_POST['image_link'])))."', 
+			 '".esc_sql(stripslashes(trim($_POST['link_target'])))."', 
+			 '".esc_sql(stripslashes(trim($_POST['iframe_source'])))."', 
+			 '".esc_sql(stripslashes(trim($_POST['own_html'])))."' 
 			 )";			
 			$wpdb->query($sql);
 			$msg="New banner has been saved";							
