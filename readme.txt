@@ -3,7 +3,7 @@ Contributors: onetarek
 Buy link: http://wpadguru.com/
 Tags: Ad management, Ad Manager,Ads, Banner, Modal Popup, Popup Window, Advertising, Management, Widget, Shotcode, Ad Zone, Geo Location, Ad Rotator, Ad Slider
 Requires at least: 3.6.0
-Tested up to: 4.0
+Tested up to: 4.1.2
 Stable tag: 1.5.0
 License: GPLv2+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -40,7 +40,7 @@ Complete advertising management plugin for WordPress. Monetize your website traf
 *   **Rotate modal popup and window popup** based on defined percentage of each popup in a specific page.
 *   Show ads based on **GeoLocation (country)**.
 *   Show different ads by multiple condition of visited page.
-*   Define ads for **side-wide (default)**.
+*   Define ads for **site-wide (default)**.
 *   Define ads only for **home page**.
 *   Define ads only for any type of **single page**. 
 *   Define ads only for **individual single post**.
